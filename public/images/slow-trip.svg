@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-label="清晨空荡的街道，极简线条插画">
+  <g fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round">
+    <line x1="0" y1="470" x2="1200" y2="470" />
+  </g>
+
+  <circle cx="905" cy="150" r="42" fill="#e8a33d" fill-opacity="0.18" stroke="#e8a33d" stroke-width="2.5" />
+
+  <g stroke="#9aa0a6" stroke-width="2.5" fill="none">
+    <!-- 左侧建筑群 -->
+    <path d="M60 470 V250 h140 V470" />
+    <path d="M200 470 V320 h110 V470" />
+    <path d="M310 470 V196 h170 V470" />
+    <!-- 右侧建筑群 -->
+    <path d="M700 470 V276 h130 V470" />
+    <path d="M830 470 V352 h120 V470" />
+    <path d="M950 470 V232 h160 V470" />
+  </g>
+
+  <g fill="#9aa0a6" opacity="0.35">
+    <rect x="92" y="286" width="26" height="34" rx="3" />
+    <rect x="142" y="286" width="26" height="34" rx="3" />
+    <rect x="92" y="352" width="26" height="34" rx="3" />
+    <rect x="142" y="352" width="26" height="34" rx="3" />
+    <rect x="346" y="238" width="24" height="30" rx="3" />
+    <rect x="392" y="238" width="24" height="30" rx="3" />
+    <rect x="438" y="238" width="24" height="30" rx="3" />
+    <rect x="346" y="304" width="24" height="30" rx="3" />
+    <rect x="392" y="304" width="24" height="30" rx="3" />
+    <rect x="438" y="304" width="24" height="30" rx="3" />
+    <rect x="986" y="276" width="26" height="32" rx="3" />
+    <rect x="1036" y="276" width="26" height="32" rx="3" />
+  </g>
+
+  <!-- 路与灯 -->
+  <g fill="none" stroke="#9aa0a6" stroke-width="2.5">
+    <line x1="520" y1="470" x2="360" y2="600" stroke-dasharray="16 18" opacity="0.5" />
+    <line x1="580" y1="470" x2="740" y2="600" stroke-dasharray="16 18" opacity="0.5" />
+    <path d="M552 470 V300" />
+    <path d="M552 300 h58" />
+    <circle cx="618" cy="312" r="11" fill="#e8a33d" fill-opacity="0.22" stroke="#e8a33d" stroke-width="2.5" />
+  </g>
+
+  <g fill="#9aa0a6" opacity="0.25">
+    <ellipse cx="180" cy="470" rx="46" ry="7" />
+    <ellipse cx="1010" cy="470" rx="56" ry="7" />
+  </g>
+</svg>

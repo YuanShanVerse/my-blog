@@ -1,0 +1,45 @@
+{
+  "$comment": "分类配置。slug 用于 URL（/categories/ai），name 用于展示，description 显示在分类页顶部。新增分类：在这里加一条，然后在文章 frontmatter 里写 category 即可。",
+  "categories": [
+    {
+      "slug": "ai",
+      "name": "AI",
+      "description": "关于人工智能、AI Agent、大模型以及日常 AI 工具的记录与实践。"
+    },
+    {
+      "slug": "tech",
+      "name": "科技",
+      "description": "工具、软件、硬件，以及那些正在改变工作方式的技术。"
+    },
+    {
+      "slug": "investing",
+      "name": "投资",
+      "description": "记录我的投资体系、决策过程，以及犯过的错。"
+    },
+    {
+      "slug": "career",
+      "name": "职业",
+      "description": "职业选择、海外工作、个人成长与长期主义。"
+    },
+    {
+      "slug": "reading",
+      "name": "阅读",
+      "description": "读过的书、做过的笔记，以及被改变的想法。"
+    },
+    {
+      "slug": "travel",
+      "name": "旅行",
+      "description": "去过的城市、路上的观察与慢下来的时刻。"
+    },
+    {
+      "slug": "life",
+      "name": "生活",
+      "description": "日常、秩序、情绪，以及普通生活里的具体细节。"
+    },
+    {
+      "slug": "essay",
+      "name": "随笔",
+      "description": "没有明确归属的思考，想到哪写到哪。"
+    }
+  ]
+}

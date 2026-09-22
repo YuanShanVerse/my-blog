@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-label="知识流示意：捕获、消化、连接、输出四个环节">
+  <g fill="none" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round">
+    <line x1="210" y1="168" x2="990" y2="168" stroke-dasharray="2 12" />
+  </g>
+
+  <g fill="none" stroke-width="2.5">
+    <circle cx="150" cy="168" r="56" stroke="#2f6df6" fill="#2f6df6" fill-opacity="0.10" />
+    <circle cx="450" cy="168" r="56" stroke="#9aa0a6" />
+    <circle cx="750" cy="168" r="56" stroke="#9aa0a6" />
+    <circle cx="1050" cy="168" r="56" stroke="#9aa0a6" />
+  </g>
+
+  <g stroke-linecap="round">
+    <g stroke="#2f6df6" stroke-width="3">
+      <line x1="126" y1="168" x2="174" y2="168" />
+      <line x1="150" y1="144" x2="150" y2="192" />
+    </g>
+    <g stroke="#9aa0a6" stroke-width="3">
+      <line x1="430" y1="156" x2="470" y2="156" />
+      <line x1="430" y1="180" x2="470" y2="180" />
+      <line x1="730" y1="168" x2="770" y2="168" />
+      <circle cx="750" cy="168" r="8" fill="#9aa0a6" stroke="none" />
+      <line x1="1032" y1="168" x2="1068" y2="168" />
+      <path d="M1058 158 L1070 168 L1058 178" fill="none" stroke="#9aa0a6" stroke-width="3" />
+    </g>
+  </g>
+
+  <g fill="#9aa0a6" opacity="0.55">
+    <rect x="106" y="262" width="88" height="5" rx="2.5" />
+    <rect x="406" y="262" width="88" height="5" rx="2.5" />
+    <rect x="706" y="262" width="88" height="5" rx="2.5" />
+    <rect x="1006" y="262" width="88" height="5" rx="2.5" />
+    <rect x="126" y="284" width="48" height="5" rx="2.5" opacity="0.6" />
+    <rect x="426" y="284" width="48" height="5" rx="2.5" opacity="0.6" />
+    <rect x="726" y="284" width="48" height="5" rx="2.5" opacity="0.6" />
+    <rect x="1026" y="284" width="48" height="5" rx="2.5" opacity="0.6" />
+  </g>
+</svg>

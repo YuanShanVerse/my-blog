@@ -1,0 +1,460 @@
+/* ==========================================================================
+   文章正文排版
+   手写而非引入 typography 插件：中文长文的字号、行高、段间距需要单独调，
+   这里所有数值都围绕「680–760px 宽度下最舒服的中文阅读体验」来定。
+   ========================================================================== */
+
+.prose {
+  font-size: 1.0625rem; /* 17px */
+  line-height: 1.85;
+  color: var(--fg);
+  word-wrap: break-word;
+}
+
+/* ------------------------------- 段落与标题 ------------------------------- */
+
+.prose p {
+  margin: 1.35em 0;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  position: relative;
+  font-weight: 600;
+  line-height: 1.4;
+  scroll-margin-top: 6rem;
+}
+
+.prose h2 {
+  margin: 2.75em 0 1em;
+  font-size: 1.375rem;
+  letter-spacing: -0.01em;
+}
+
+.prose h3 {
+  margin: 2.25em 0 0.85em;
+  font-size: 1.125rem;
+}
+
+.prose h4 {
+  margin: 1.75em 0 0.6em;
+  font-size: 1rem;
+}
+
+.prose h2::before {
+  content: '';
+  position: absolute;
+  left: -1.1rem;
+  top: 0.5em;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .prose h2::before {
+    display: none;
+  }
+}
+
+/* 标题锚点：hover 标题时才淡淡出现 */
+.prose .heading-anchor {
+  margin-left: 0.4em;
+  color: var(--faint);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.prose .heading-anchor::after {
+  content: '#';
+  font-weight: 400;
+}
+
+.prose :is(h2, h3, h4):hover .heading-anchor {
+  opacity: 1;
+}
+
+/* --------------------------------- 行内元素 -------------------------------- */
+
+.prose a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 150ms ease, color 150ms ease;
+}
+
+.prose a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.prose a[data-external='true']::after {
+  content: '↗';
+  display: inline-block;
+  margin-left: 0.15em;
+  font-size: 0.8em;
+  color: var(--faint);
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose mark {
+  background: var(--accent-soft);
+  color: inherit;
+  padding: 0 0.15em;
+  border-radius: 2px;
+}
+
+.prose hr {
+  margin: 3em 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* --------------------------------- 列表 --------------------------------- */
+
+.prose ul,
+.prose ol {
+  margin: 1.25em 0;
+  padding-left: 1.4em;
+}
+
+.prose li {
+  margin: 0.5em 0;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li::marker {
+  color: var(--faint);
+}
+
+.prose li > ul,
+.prose li > ol {
+  margin: 0.4em 0;
+}
+
+/* GFM 任务列表 */
+.prose li.task-list-item {
+  list-style: none;
+  margin-left: -1.3em;
+  padding-left: 1.3em;
+  position: relative;
+}
+
+.prose li.task-list-item input[type='checkbox'] {
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.85em;
+  height: 0.85em;
+  accent-color: var(--accent);
+}
+
+/* --------------------------------- 引用 --------------------------------- */
+
+.prose blockquote {
+  margin: 1.75em 0;
+  padding: 0.15em 0 0.15em 1.15em;
+  border-left: 2px solid var(--border);
+  color: var(--muted);
+}
+
+.prose blockquote p {
+  margin: 0.6em 0;
+}
+
+.prose blockquote strong {
+  color: var(--fg);
+}
+
+/* --------------------------------- 图片 --------------------------------- */
+
+.prose img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2em auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.prose img[data-zoomable='true'] {
+  cursor: zoom-in;
+}
+
+.prose figure {
+  margin: 2em 0;
+}
+
+.prose figcaption {
+  margin-top: 0.75em;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* --------------------------------- 代码 --------------------------------- */
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+/* 行内代码 */
+.prose :not(pre) > code {
+  padding: 0.15em 0.38em;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--code-bg);
+  white-space: break-spaces;
+}
+
+/* 代码块外层容器（由 lib/markdown.ts 生成） */
+.prose .code-block {
+  position: relative;
+  margin: 1.85em 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.prose .code-block::before {
+  content: attr(data-title);
+  display: block;
+  padding: 0.55rem 3.4rem 0.55rem 0.95rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* 没有标题时，用语言名做一条极细的顶栏 */
+.prose .code-block:not([data-title])::before {
+  content: attr(data-lang);
+  opacity: 0.55;
+}
+
+.prose .code-block pre {
+  margin: 0;
+  padding: 0.95rem 1.1rem;
+  overflow-x: auto;
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose .code-block pre code {
+  display: block;
+  min-width: max-content;
+  font-size: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+/* Shiki 双主题：只切换 CSS 变量，切换深色模式不需要重新高亮 */
+.prose .shiki,
+.prose .shiki span {
+  color: var(--shiki-light);
+}
+
+.prose .shiki {
+  background-color: var(--shiki-light-bg);
+}
+
+.dark .prose .shiki,
+.dark .prose .shiki span {
+  color: var(--shiki-dark);
+}
+
+.dark .prose .shiki {
+  background-color: var(--shiki-dark-bg);
+}
+
+/* 复制按钮（由 components/ArticleEnhancements.tsx 注入） */
+.copy-code {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  color: var(--muted);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.prose .code-block:hover .copy-code,
+.copy-code:focus-visible {
+  opacity: 1;
+}
+
+.copy-code:hover {
+  color: var(--fg);
+  border-color: var(--faint);
+}
+
+.copy-code[data-copied='true'] {
+  opacity: 1;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (hover: none) {
+  .copy-code {
+    opacity: 1;
+  }
+}
+
+/* --------------------------------- 表格 --------------------------------- */
+
+.prose .table-wrap {
+  margin: 1.85em 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.prose thead th {
+  padding: 0.6em 0.9em;
+  border-bottom: 1px solid var(--fg);
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.prose tbody td {
+  padding: 0.6em 0.9em;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* --------------------------------- 脚注 --------------------------------- */
+
+.prose .footnotes {
+  margin-top: 3.5em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--border);
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.prose .footnotes h2 {
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 0.8em;
+}
+
+.prose .footnotes h2::before {
+  display: none;
+}
+
+.prose .footnotes ol {
+  padding-left: 1.2em;
+}
+
+.prose [data-footnote-ref] {
+  text-decoration: none;
+  padding: 0 0.1em;
+}
+
+/* --------------------------------- 数学公式 -------------------------------- */
+
+.prose .katex {
+  font-size: 1.02em;
+}
+
+.prose .katex-display {
+  margin: 1.6em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2em 0;
+}
+
+/* -------------------------------- 折叠内容 -------------------------------- */
+
+.prose details {
+  margin: 1.6em 0;
+  padding: 0.85em 1em;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.prose summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* --------------------------------- 图片放大 -------------------------------- */
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+  background: rgba(9, 9, 11, 0.88);
+  backdrop-filter: blur(6px);
+  animation: fade-in 180ms ease-out both;
+  cursor: zoom-out;
+}
+
+.image-lightbox img {
+  max-width: 100%;
+  max-height: 92vh;
+  width: auto;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
