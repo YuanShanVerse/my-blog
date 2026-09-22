@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { GitHubIcon, MailIcon, RssIcon } from '@/components/Icons';
-import { mainNav, site } from '@/lib/site';
+import { contacts, mainNav, site } from '@/lib/site';
 
 /** 页脚：极简三行，把出口（RSS / GitHub / Email）留给真正想关注的人 */
 export function Footer() {
@@ -33,22 +33,26 @@ export function Footer() {
             </Link>
           ))}
           <span className="h-3 w-px bg-line" aria-hidden="true" />
-          <a
-            href={site.author.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="link-muted inline-flex items-center gap-1.5"
-          >
-            <GitHubIcon className="h-3.5 w-3.5" />
-            GitHub
-          </a>
-          <a
-            href={`mailto:${site.author.email}`}
-            className="link-muted inline-flex items-center gap-1.5"
-          >
-            <MailIcon className="h-3.5 w-3.5" />
-            Email
-          </a>
+          {contacts.github && (
+            <a
+              href={contacts.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-muted inline-flex items-center gap-1.5"
+            >
+              <GitHubIcon className="h-3.5 w-3.5" />
+              GitHub
+            </a>
+          )}
+          {contacts.email && (
+            <a
+              href={`mailto:${contacts.email}`}
+              className="link-muted inline-flex items-center gap-1.5"
+            >
+              <MailIcon className="h-3.5 w-3.5" />
+              Email
+            </a>
+          )}
           <Link href="/rss.xml" className="link-muted inline-flex items-center gap-1.5">
             <RssIcon className="h-3.5 w-3.5" />
             RSS

@@ -7,7 +7,7 @@ import { NowBlock } from '@/components/NowBlock';
 import { PostListItem } from '@/components/PostListItem';
 import { Section } from '@/components/Section';
 import { getCategoriesWithCount, getFeaturedPosts, getLatestPosts, getTotalPostCount } from '@/lib/posts';
-import { absoluteUrl, site } from '@/lib/site';
+import { absoluteUrl, contacts, site } from '@/lib/site';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -24,7 +24,7 @@ const websiteJsonLd = {
     '@type': 'Person',
     name: site.author.name,
     url: site.url,
-    sameAs: [site.author.github].filter(Boolean),
+    sameAs: [contacts.github].filter(Boolean),
   },
   potentialAction: {
     '@type': 'SearchAction',
@@ -46,32 +46,36 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
       />
 
-      {/* Hero：只有名字、一句话和几个出口，不做大 Banner */}
+      {/* Hero：只有站名、一句话和几个出口，不做大 Banner */}
       <section className="max-w-reading pb-2 pt-16 sm:pt-24">
-        <p className="text-2xs uppercase tracking-[0.24em] text-faint">{site.name} · Personal Blog</p>
-        <h1 className="mt-5 text-[1.75rem] font-semibold leading-tight tracking-tight sm:text-[2.125rem]">
-          {site.author.name}
+        <p className="text-2xs uppercase tracking-[0.24em] text-faint">{site.nameEn} · Personal Blog</p>
+        <h1 className="mt-5 text-[2rem] font-semibold leading-tight tracking-tight sm:text-[2.5rem]">
+          {site.name}
         </h1>
         <p className="mt-4 text-base text-fg sm:text-[1.0625rem]">{site.tagline}</p>
         <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">{site.description}</p>
 
         <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted">
-          <a
-            href={site.author.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-fg"
-          >
-            <GitHubIcon className="h-3.5 w-3.5" />
-            GitHub
-          </a>
-          <a
-            href={`mailto:${site.author.email}`}
-            className="inline-flex items-center gap-1.5 transition-colors hover:text-fg"
-          >
-            <MailIcon className="h-3.5 w-3.5" />
-            {site.author.email}
-          </a>
+          {contacts.github && (
+            <a
+              href={contacts.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-fg"
+            >
+              <GitHubIcon className="h-3.5 w-3.5" />
+              GitHub
+            </a>
+          )}
+          {contacts.email && (
+            <a
+              href={`mailto:${contacts.email}`}
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-fg"
+            >
+              <MailIcon className="h-3.5 w-3.5" />
+              {contacts.email}
+            </a>
+          )}
           <Link href="/rss.xml" className="inline-flex items-center gap-1.5 transition-colors hover:text-fg">
             <RssIcon className="h-3.5 w-3.5" />
             RSS

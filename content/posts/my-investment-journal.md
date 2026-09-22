@@ -5,7 +5,7 @@ date: "2026-08-15"
 updated: "2026-09-02"
 category: "投资"
 tags: [投资, 复盘, 纪律]
-author: "你的名字"
+author: "YuanShan"
 draft: false
 featured: true
 ---

@@ -1,7 +1,9 @@
-# 留白 · 个人博客
+# 远山 YuanShanVerse
 
 一个以内容为中心的极简个人博客 / 数字花园。写作流程是 **写 Markdown → git push → 自动部署**，没有后台、没有数据库、没有第三方脚本。
 
+- 线上地址：<https://my-blog-svlq.vercel.app>
+- 仓库：<https://github.com/YuanShanVerse/my-blog>
 - 站点名、作者、简介、社交链接：全在 `config/site.json`
 - 分类：全在 `config/categories.json`
 - 文章：`content/posts/*.md`
@@ -114,7 +116,7 @@ date: "2026-09-21"
 updated: "2026-09-24"        # 可选，会显示「更新于」
 category: "AI"               # 可写分类名（AI）或 slug（ai）
 tags: [AI, Agent, LLM]
-author: "你的名字"            # 可选，不写则用 config/site.json 里的作者名
+author: "YuanShan"            # 可选，不写则用 config/site.json 里的作者名
 cover: "/images/cover.webp"  # 可选，填了会作为 OG 图
 draft: false
 featured: true               # 可选，首页「精选」区会展示（最多 3 篇）
@@ -137,15 +139,26 @@ featured: true               # 可选，首页「精选」区会展示（最多 
 | 字段 | 作用 |
 | --- | --- |
 | `name` / `nameEn` | 站点名（导航左上角、页脚、SEO 标题模板） |
-| `title` | 浏览器标题（首页） |
+| `title` | 浏览器标题（首页）与分享图主标题 |
 | `tagline` / `description` | 首页那一句英文标语 + 中文简介（也用作全站 description） |
-| `url` | **站点正式域名，必须改成你自己的**（影响 canonical / OG / sitemap / RSS 里的绝对地址） |
-| `author.*` | 姓名、bio、Email、GitHub、Twitter、所在地 |
+| `url` | 本地开发时的地址兜底；**在 Vercel 上会被自动注入的域名覆盖**（见下方说明） |
+| `repo` | 仓库地址，用于文章底部「在 GitHub 上编辑本文」链接；留空则不显示 |
+| `author.*` | 姓名、bio、Email、GitHub、Twitter、所在地。**`email` / `twitter` / `location` 留空即不渲染**，不会出现空链接 |
 | `intro.lead` / `intro.body` | 首页与关于页的自我介绍段落 |
 | `now.text` / `now.updated` | 首页 Now 区块文案与更新时间 |
 | `featuredLimit` / `postsPerPage` / `latestOnHome` | 精选数量 / 每页篇数 / 首页展示篇数 |
 
-> 改完 `url` 后需要重新构建，sitemap / RSS / canonical 才会更新。
+### 关于 `url` 与域名的关系
+
+站点对外地址按下面的优先级解析（见 `lib/site.ts`），**换域名时不用改代码**：
+
+1. `NEXT_PUBLIC_SITE_URL`（环境变量，最高优先级）
+2. `VERCEL_PROJECT_PRODUCTION_URL`（Vercel 自动注入的项目生产域名）
+3. `VERCEL_URL`（Vercel 自动注入的本次部署域名）
+4. `config/site.json` 里的 `url`（本地开发兜底）
+
+所以：本地开发不用管；部署到 Vercel 后 canonical / sitemap / RSS / OG 会自动用 Vercel 域名；
+**绑定正式域名后，只需要在 Vercel 项目里加一个 `NEXT_PUBLIC_SITE_URL=https://你的域名` 环境变量再重新部署即可。**
 
 ---
 
@@ -205,7 +218,8 @@ vercel --prod   # 生产环境
    - `www` 子域名：添加 `CNAME` 记录指向 `cname.vercel-dns.com`
    - （具体值以 Vercel 页面提示为准）
 3. 等待 DNS 生效（通常几分钟到几小时），Vercel 会自动签发 HTTPS 证书
-4. **把 `config/site.json` 里的 `url` 改成你的正式域名**（如 `https://example.com`），然后重新部署 —— 这一步不能忘，否则 canonical、sitemap、RSS 里还是旧域名
+4. **在 Vercel 项目里加环境变量 `NEXT_PUBLIC_SITE_URL = https://你的域名`**，然后重新部署 —— 这一步不能忘，否则 canonical、sitemap、RSS 里还是旧的 Vercel 域名
+5. 在 Vercel 的 Domains 里把 `www.你的域名` 设为跳转到主域名（或反之），只保留一个 canonical 域名
 
 绑定完成后建议提交一次站点地图给搜索引擎：Google Search Console / Bing Webmaster 添加 `https://你的域名/sitemap.xml`。
 

@@ -18,7 +18,7 @@ import {
   getRelatedPosts,
   type PostMeta,
 } from '@/lib/posts';
-import { absoluteUrl, site } from '@/lib/site';
+import { absoluteUrl, repoFileUrl, site } from '@/lib/site';
 import { formatDate } from '@/lib/utils';
 
 interface PageProps {
@@ -126,6 +126,7 @@ export default async function PostPage({ params }: PageProps) {
   const author = post.author || site.author.name;
   const updatedOn = post.updated && post.updated !== post.date ? post.updated : null;
   const canonical = absoluteUrl(`/posts/${post.slug}`);
+  const sourceUrl = repoFileUrl(`content/posts/${post.slug}.md`);
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -225,15 +226,17 @@ export default async function PostPage({ params }: PageProps) {
             {/* 分享 / 源文件 */}
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
               <ShareButtons url={canonical} title={post.title} />
-              <a
-                href={`${site.author.github}/blob/main/content/posts/${post.slug}.md`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-fg"
-              >
-                <EditIcon className="h-3.5 w-3.5" />
-                在 GitHub 上编辑本文
-              </a>
+              {sourceUrl && (
+                <a
+                  href={sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-muted transition-colors hover:text-fg"
+                >
+                  <EditIcon className="h-3.5 w-3.5" />
+                  在 GitHub 上编辑本文
+                </a>
+              )}
             </div>
 
             <ArticleFooterNav post={post} />

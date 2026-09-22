@@ -5,7 +5,7 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { SearchDialog } from '@/components/SearchDialog';
 import { ThemeScript } from '@/components/ThemeScript';
-import { absoluteUrl, site } from '@/lib/site';
+import { absoluteUrl, contacts, site } from '@/lib/site';
 
 import 'katex/dist/katex.min.css';
 import '@/styles/globals.css';
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
-  authors: [{ name: site.author.name, url: site.author.github }],
+  authors: [{ name: site.author.name, ...(contacts.github ? { url: contacts.github } : {}) }],
   creator: site.author.name,
   publisher: site.author.name,
   keywords: ['个人博客', '数字花园', 'AI', '投资', '读书笔记', '职业发展', '生活记录'],

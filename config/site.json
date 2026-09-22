@@ -1,24 +1,25 @@
 {
-  "$comment": "站点全局配置。改这一个文件就能换名字、简介、社交链接、域名等。",
-  "name": "留白",
-  "nameEn": "LIUBAI",
-  "title": "留白 · 个人博客",
+  "$comment": "站点全局配置。改这一个文件就能换名字、简介、社交链接、域名等。留空的可选字段（email / twitter / location）不会在页面上渲染。",
+  "name": "远山",
+  "nameEn": "YuanShanVerse",
+  "title": "远山 YuanShanVerse",
   "tagline": "Thinking, writing and building.",
   "description": "记录我对 AI、科技、投资、职业与生活的思考。",
-  "url": "https://example.com",
+  "url": "https://my-blog-svlq.vercel.app",
+  "repo": "https://github.com/YuanShanVerse/my-blog",
   "locale": "zh-CN",
   "lang": "zh-CN",
   "author": {
-    "name": "你的名字",
-    "bio": "对 AI、商业、投资和个人成长感兴趣。喜欢研究工具，也喜欢记录自己的思考。",
-    "email": "hello@example.com",
-    "github": "https://github.com/yourname",
-    "twitter": "https://x.com/yourname",
-    "location": "Somewhere on Earth"
+    "name": "YuanShan",
+    "bio": "对 AI、商业、投资和个人成长感兴趣。喜欢研究工具，也喜欢把想清楚的事情写下来。",
+    "email": "",
+    "github": "https://github.com/YuanShanVerse",
+    "twitter": "",
+    "location": ""
   },
   "intro": {
-    "lead": "我是你的名字，在这里记录我的思考。",
-    "body": "关注 AI、科技与投资，也在意一个人如何长期地把事情做成。这个网站是我积累知识与生活记录的地方——写得不快，但希望对你有用。"
+    "lead": "我是 YuanShan，在这里记录我看到的、想清楚的，以及正在做的事。",
+    "body": "关注 AI、科技与投资，也在意一个人如何长期地把事情做成。写得不快，但希望每一篇都经得起回头再看。"
   },
   "now": {
     "text": "Currently exploring AI agents, personal knowledge management and investing.",
@@ -28,7 +29,7 @@
   "postsPerPage": 6,
   "latestOnHome": 6,
   "rss": {
-    "title": "留白 · 个人博客",
+    "title": "远山 YuanShanVerse",
     "description": "记录我对 AI、科技、投资、职业与生活的思考。",
     "language": "zh-cn"
   }

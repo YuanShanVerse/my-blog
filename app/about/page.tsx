@@ -5,7 +5,7 @@ import { CategoryList } from '@/components/CategoryList';
 import { GitHubIcon, MailIcon, RssIcon } from '@/components/Icons';
 import { NowBlock } from '@/components/NowBlock';
 import { getCategoriesWithCount, getTotalPostCount } from '@/lib/posts';
-import { absoluteUrl, site } from '@/lib/site';
+import { absoluteUrl, contacts, site } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: '关于',
@@ -63,28 +63,36 @@ export default function AboutPage() {
           </Block>
 
           <Block title="Contact">
-            <p>如果你想聊点什么，邮件是最可靠的方式。也欢迎在留言板留个脚印。</p>
+            <p>
+              {contacts.email
+                ? '如果你想聊点什么，邮件是最可靠的方式。也欢迎在留言板留个脚印。'
+                : '如果你想聊点什么，欢迎在 GitHub 或留言板找我。'}
+            </p>
             <ul className="space-y-2.5">
-              <li>
-                <a
-                  href={`mailto:${site.author.email}`}
-                  className="inline-flex items-center gap-2 text-fg transition-colors hover:text-accent"
-                >
-                  <MailIcon className="h-4 w-4 text-faint" />
-                  {site.author.email}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={site.author.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-fg transition-colors hover:text-accent"
-                >
-                  <GitHubIcon className="h-4 w-4 text-faint" />
-                  GitHub
-                </a>
-              </li>
+              {contacts.email && (
+                <li>
+                  <a
+                    href={`mailto:${contacts.email}`}
+                    className="inline-flex items-center gap-2 text-fg transition-colors hover:text-accent"
+                  >
+                    <MailIcon className="h-4 w-4 text-faint" />
+                    {contacts.email}
+                  </a>
+                </li>
+              )}
+              {contacts.github && (
+                <li>
+                  <a
+                    href={contacts.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-fg transition-colors hover:text-accent"
+                  >
+                    <GitHubIcon className="h-4 w-4 text-faint" />
+                    GitHub
+                  </a>
+                </li>
+              )}
               <li>
                 <Link
                   href="/guestbook"
@@ -112,10 +120,12 @@ export default function AboutPage() {
               静态生成，构建产物是纯静态文件。没有数据库，没有第三方统计脚本，尽量少的
               JavaScript —— 目的是让它能被我长期维护下去。
             </p>
-            <p className="text-[0.875rem] text-faint">
-              文章源文件在 {site.author.github}/tree/main/content/posts，欢迎在 GitHub 上看到错别字就提
-              issue。
-            </p>
+            {contacts.repo && (
+              <p className="text-[0.875rem] text-faint">
+                文章源文件在 {contacts.repo}/tree/main/content/posts，欢迎在 GitHub
+                上看到错别字就提 issue。
+              </p>
+            )}
           </Block>
         </div>
       </div>
