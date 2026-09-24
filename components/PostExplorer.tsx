@@ -6,7 +6,6 @@ import { CloseIcon, SearchIcon } from '@/components/Icons';
 import { Pagination } from '@/components/Pagination';
 import { PostListItem } from '@/components/PostListItem';
 import type { PostMeta } from '@/lib/posts';
-import { cn } from '@/lib/utils';
 
 /**
  * 文章浏览器：搜索 + 分类筛选 + 排序 + 分页。
@@ -131,9 +130,9 @@ export function PostExplorer({ posts, perPage = 6, lockedCategory, className }: 
   return (
     <div className={className}>
       {/* 控制区 */}
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <label className="relative flex h-10 w-full items-center rounded-lg border border-line bg-surface px-3 transition-colors focus-within:border-faint sm:max-w-xs">
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <label className="relative flex h-9 w-full items-center border-b border-line transition-colors focus-within:border-fg sm:max-w-xs">
             <SearchIcon className="h-4 w-4 shrink-0 text-faint" />
             <input
               type="search"
@@ -155,7 +154,7 @@ export function PostExplorer({ posts, perPage = 6, lockedCategory, className }: 
             )}
           </label>
 
-          <div className="flex items-center gap-3 text-xs text-faint">
+          <div className="t-meta flex items-center gap-3">
             <span className="tabular-nums">
               共 {filtered.length} 篇
               {totalPages > 1 && ` · 第 ${currentPage} / ${totalPages} 页`}
@@ -172,11 +171,12 @@ export function PostExplorer({ posts, perPage = 6, lockedCategory, className }: 
         </div>
 
         {!lockedCategory && (
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2.5">
             <button
               type="button"
               onClick={() => patch({ category: '', page: 1 })}
-              className={cn('chip-plain', !filters.category && 'border-fg text-fg')}
+              data-active={!filters.category}
+              className="filter"
             >
               全部
               <span className="ml-1.5 tabular-nums text-faint">{posts.length}</span>
@@ -191,7 +191,8 @@ export function PostExplorer({ posts, perPage = 6, lockedCategory, className }: 
                     page: 1,
                   })
                 }
-                className={cn('chip-plain', filters.category === category.slug && 'border-fg text-fg')}
+                data-active={filters.category === category.slug}
+                className="filter"
               >
                 {category.name}
                 <span className="ml-1.5 tabular-nums text-faint">{category.count}</span>
@@ -201,15 +202,16 @@ export function PostExplorer({ posts, perPage = 6, lockedCategory, className }: 
         )}
 
         {filters.tag && (
-          <div className="flex items-center gap-2 text-xs text-muted">
+          <div className="flex items-baseline gap-3 text-sm text-muted">
             标签筛选：
             <button
               type="button"
               onClick={() => patch({ tag: '', page: 1 })}
-              className="chip-plain border-fg text-fg"
+              data-active="true"
+              className="filter inline-flex items-center gap-1.5"
             >
               #{filters.tag}
-              <CloseIcon className="ml-1.5 h-3 w-3" />
+              <CloseIcon className="h-3 w-3" />
             </button>
           </div>
         )}
@@ -217,23 +219,19 @@ export function PostExplorer({ posts, perPage = 6, lockedCategory, className }: 
 
       {/* 列表 */}
       {visible.length > 0 ? (
-        <div className="divide-list mt-8">
+        <div className="divide-list mt-10">
           {visible.map((post) => (
-            <PostListItem key={post.slug} post={post} className="py-7" />
+            <PostListItem key={post.slug} post={post} className="py-6" />
           ))}
         </div>
       ) : (
-        <div className="mt-10 rounded-lg border border-dashed border-line px-6 py-16 text-center">
+        <div className="mt-10 border border-dashed border-line px-6 py-20 text-center">
           <p className="text-sm text-muted">没有找到匹配的文章</p>
-          <p className="mt-1.5 text-xs text-faint">
+          <p className="mt-2 text-xs text-faint">
             {hasActiveFilter ? '试试清除筛选条件' : '还没有发布任何文章'}
           </p>
           {hasActiveFilter && (
-            <button
-              type="button"
-              onClick={() => setFilters({ ...EMPTY_FILTERS })}
-              className="btn mt-5"
-            >
+            <button type="button" onClick={() => setFilters({ ...EMPTY_FILTERS })} className="btn mt-6">
               清除筛选
             </button>
           )}

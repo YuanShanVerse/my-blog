@@ -37,7 +37,7 @@ export function TableOfContents({
         if (visible[0]) setActiveId(visible[0].target.id);
       },
       // 只在视口上方约 1/3 的带状区域里判断「当前小节」
-      { rootMargin: '-88px 0px -68% 0px', threshold: [0, 1] },
+      { rootMargin: '-80px 0px -68% 0px', threshold: [0, 1] },
     );
 
     headings.forEach((heading) => observer.observe(heading));
@@ -47,7 +47,7 @@ export function TableOfContents({
   if (items.length < 2) return null;
 
   const list = (
-    <ul className="border-l border-line">
+    <ul className="space-y-2.5">
       {items.map((item) => {
         const active = item.id === activeId;
         return (
@@ -55,11 +55,9 @@ export function TableOfContents({
             <a
               href={`#${item.id}`}
               className={cn(
-                '-ml-px block border-l-2 py-1 pr-2 text-[0.8125rem] leading-snug transition-colors',
-                item.depth === 3 ? 'pl-6' : 'pl-3',
-                active
-                  ? 'border-fg font-medium text-fg'
-                  : 'border-transparent text-muted hover:text-fg',
+                '-ml-px block border-l py-0.5 pr-2 text-[0.8125rem] leading-snug transition-colors',
+                item.depth === 3 ? 'pl-5' : 'pl-3',
+                active ? 'border-fg text-fg' : 'border-line text-muted hover:text-fg',
               )}
             >
               {item.text}
@@ -72,20 +70,20 @@ export function TableOfContents({
 
   if (variant === 'mobile') {
     return (
-      <details className="mb-10 rounded-lg border border-line bg-surface px-4 py-3 lg:hidden">
-        <summary className="flex cursor-pointer items-center justify-between text-sm text-muted">
+      <details className="mb-12 border-y border-line py-4 lg:hidden">
+        <summary className="flex cursor-pointer items-baseline justify-between text-sm text-muted">
           本文目录
-          <span className="text-2xs text-faint">{items.length} 节</span>
+          <span className="t-meta">{items.length} 节</span>
         </summary>
-        <div className="mt-3 border-t border-line pt-3">{list}</div>
+        <div className="mt-4">{list}</div>
       </details>
     );
   }
 
   return (
     <aside className="hidden lg:block">
-      <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
-        <p className="mb-3 text-2xs uppercase tracking-[0.2em] text-faint">目录</p>
+      <div className="sticky top-20 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
+        <p className="mb-4 text-xs text-faint">目录</p>
         {list}
       </div>
     </aside>

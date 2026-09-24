@@ -41,7 +41,7 @@ export function ReadingProgress() {
     <div className="pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5" aria-hidden="true">
       <div
         ref={barRef}
-        className="h-full origin-left bg-accent opacity-0 transition-opacity duration-300"
+        className="h-full origin-left bg-fg opacity-0 transition-opacity duration-300"
         style={{ transform: 'scaleX(0)' }}
       />
     </div>

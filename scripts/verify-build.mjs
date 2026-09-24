@@ -8,6 +8,8 @@
  *   3. 草稿（draft: true）是否泄漏到了任何公开产物里
  *   4. 每篇文章的 SEO 元信息是否齐全
  *   5. 文章页正文是否真的渲染出了目录与内容
+ *   6. 每个页面是否有且只有一个 h1
+ *   7. 静态文件（RSS / Sitemap）是否误用了 next/link
  *
  * 任何一项失败都会以非 0 退出码结束，方便接到 CI 里。
  */
@@ -123,6 +125,60 @@ const homeHtml = readFileSync(path.join(outDir, 'index.html'), 'utf8');
 check('首页注入主题脚本（防深色闪屏）', homeHtml.includes("localStorage.getItem('theme')"), '');
 check('首页存在 RSS 订阅入口', homeHtml.includes('/rss.xml'), '');
 check('首页渲染出文章列表', homeHtml.includes('/posts/'), '');
+
+/* ------------------------------ 6. 标题层级 ------------------------------ */
+
+/*
+ * 每个页面必须有且只有一个 h1。
+ * 首屏与关于页的视觉标题是 SVG 字标，最容易在改版时把一级标题漏掉，
+ * 所以这里对所有产出页面做一次兜底检查。
+ */
+const pageHtmlFiles = readdirSync(outDir, { recursive: true })
+  .map((entry) => String(entry))
+  .filter((entry) => entry.endsWith('.html'));
+
+const h1Problems = pageHtmlFiles
+  .map((file) => {
+    const html = readFileSync(path.join(outDir, file), 'utf8');
+    const count = (html.match(/<h1[\s>]/g) ?? []).length;
+    return count === 1 ? null : `${file} 有 ${count} 个`;
+  })
+  .filter(Boolean);
+
+check(
+  '每个页面有且只有一个 h1',
+  h1Problems.length === 0,
+  h1Problems.length ? h1Problems.join(', ') : `${pageHtmlFiles.length} 个页面全部通过`,
+);
+
+/* ---------------------------- 7. 源码层链接写法 ---------------------------- */
+
+/*
+ * rss.xml / sitemap.xml / og.png 这类构建期产出的静态文件必须用原生 <a>。
+ * 用 next/link 会触发 RSC 预取（/rss.xml.txt），在静态托管下必然 404，
+ * 而产物 HTML 与原生 <a> 长得一样，没法在产物里查，只能查源码。
+ */
+const sourceDirs = ['app', 'components'];
+const sourceFiles = [];
+const collectSources = (dir) => {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) collectSources(full);
+    else if (/\.tsx?$/.test(entry.name)) sourceFiles.push(full);
+  }
+};
+for (const dir of sourceDirs) collectSources(path.join(projectRoot, dir));
+
+const badLinkPattern = /<Link[^>]*href="\/[^"]*\.(?:xml|json|txt|png|svg|ico)"/;
+const badLinks = sourceFiles
+  .filter((file) => badLinkPattern.test(readFileSync(file, 'utf8')))
+  .map((file) => path.relative(projectRoot, file));
+
+check(
+  '静态文件链接使用原生 <a> 而非 next/link',
+  badLinks.length === 0,
+  badLinks.length ? badLinks.join(', ') : `${sourceFiles.length} 个源文件全部通过`,
+);
 
 /* ------------------------------- 输出结果 ------------------------------- */
 

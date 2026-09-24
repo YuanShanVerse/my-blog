@@ -19,17 +19,17 @@ export function CategoryList({
 }) {
   if (variant === 'inline') {
     return (
-      <div className={cn('flex flex-wrap items-center gap-x-5 gap-y-3', className)}>
+      <div className={cn('flex flex-wrap items-baseline gap-x-7 gap-y-3', className)}>
         {categories.map((category) => (
           <Link
             key={category.slug}
             href={`/categories/${category.slug}`}
-            className="group flex items-baseline gap-1.5 text-sm text-fg"
+            className="group flex items-baseline gap-2 text-sm text-fg"
           >
-            <span className="border-b border-transparent pb-0.5 transition-colors group-hover:border-fg">
+            <span className="underline decoration-transparent decoration-1 underline-offset-4 transition-colors group-hover:decoration-accent">
               {category.name}
             </span>
-            <span className="text-xs tabular-nums text-faint">{category.count}</span>
+            <span className="t-meta tabular-nums">{category.count}</span>
           </Link>
         ))}
       </div>
@@ -37,25 +37,23 @@ export function CategoryList({
   }
 
   return (
-    <div className={cn('grid gap-x-10 gap-y-1 sm:grid-cols-2', className)}>
+    <div className={cn('grid gap-x-14 sm:grid-cols-2', className)}>
       {categories.map((category) => (
         <Link
           key={category.slug}
           href={`/categories/${category.slug}`}
-          className="group flex items-start justify-between gap-4 border-b border-line py-4 last:border-b-0"
+          className="group flex items-baseline justify-between gap-6 border-b border-line py-5"
         >
           <span className="min-w-0">
-            <span className="flex items-baseline gap-2">
-              <span className="text-[0.9375rem] font-medium text-fg transition-colors group-hover:text-accent">
-                {category.name}
-              </span>
-              <span className="text-xs tabular-nums text-faint">{category.count} 篇</span>
+            <span className="flex items-baseline gap-3">
+              <span className="font-serif text-base font-bold text-fg">{category.name}</span>
+              <span className="t-meta tabular-nums">{category.count} 篇</span>
             </span>
-            <span className="mt-1 line-clamp-2 block text-[0.8125rem] leading-relaxed text-muted">
+            <span className="mt-1.5 line-clamp-2 block text-[0.8125rem] leading-relaxed text-muted">
               {category.description}
             </span>
           </span>
-          <span className="mt-1 shrink-0 text-faint opacity-0 transition-opacity group-hover:opacity-100">
+          <span className="shrink-0 text-xs text-faint opacity-0 transition-opacity group-hover:opacity-100">
             →
           </span>
         </Link>

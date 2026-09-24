@@ -87,39 +87,35 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
   };
 
   return (
-    <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-16">
+    <div className="mt-14 grid gap-14 lg:grid-cols-[1fr_19rem] lg:gap-20">
       {/* 留言列表 */}
       <div className="order-2 lg:order-1">
         <div className="flex items-baseline justify-between border-b border-line pb-3">
-          <h2 className="text-2xs uppercase tracking-[0.2em] text-faint">留言</h2>
-          <span className="text-xs tabular-nums text-faint">{entries.length} 条</span>
+          <h2 className="t-section">留言</h2>
+          <span className="t-meta tabular-nums">{entries.length} 条</span>
         </div>
 
         {entries.length === 0 ? (
-          <p className="py-12 text-center text-sm text-faint">还没有留言，来做第一个吧。</p>
+          <p className="py-14 text-center text-sm text-faint">还没有留言，来做第一个吧。</p>
         ) : (
           <ul className="divide-list">
             {entries.map((entry) => (
-              <li key={entry.id} className="flex gap-4 py-6">
+              <li key={entry.id} className="flex gap-5 py-6">
                 <span
                   aria-hidden="true"
-                  className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-xs font-medium text-muted"
+                  className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center border border-line text-xs text-muted"
                 >
                   {initialOf(entry.name)}
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="text-sm font-medium text-fg">{entry.name}</span>
-                    <time className="text-xs tabular-nums text-faint">
-                      {formatDateTime(entry.createdAt)}
-                    </time>
+                    <span className="font-serif text-sm font-bold text-fg">{entry.name}</span>
+                    <time className="t-meta tabular-nums">{formatDateTime(entry.createdAt)}</time>
                     {entry.status === 'pending' && (
-                      <span className="rounded border border-line px-1.5 py-0.5 text-2xs text-faint">
-                        待审核
-                      </span>
+                      <span className="text-2xs text-faint">待审核</span>
                     )}
                   </div>
-                  <p className="mt-1.5 whitespace-pre-wrap break-words text-[0.9375rem] leading-relaxed text-muted">
+                  <p className="mt-2 whitespace-pre-wrap break-words text-[0.9375rem] leading-[1.85] text-muted">
                     {entry.message}
                   </p>
                 </div>
@@ -131,12 +127,12 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
 
       {/* 留言表单 */}
       <div className="order-1 lg:order-2">
-        <form onSubmit={onSubmit} className="lg:sticky lg:top-24">
-          <h2 className="text-2xs uppercase tracking-[0.2em] text-faint">写留言</h2>
+        <form onSubmit={onSubmit} className="lg:sticky lg:top-20">
+          <h2 className="t-section">写留言</h2>
 
-          <div className="mt-4 space-y-4">
+          <div className="mt-6 space-y-5">
             <div>
-              <label htmlFor="gb-name" className="mb-1.5 block text-xs text-muted">
+              <label htmlFor="gb-name" className="mb-2 block text-xs text-muted">
                 昵称
               </label>
               <input
@@ -145,18 +141,18 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
                 onChange={(event) => update({ name: event.target.value })}
                 maxLength={24}
                 required
-                className="h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-fg outline-none transition-colors placeholder:text-faint focus:border-faint"
+                className="h-9 w-full border-b border-line bg-transparent text-sm text-fg outline-none transition-colors placeholder:text-faint focus:border-fg"
                 placeholder="怎么称呼你？"
               />
               {errors['name'] && <p className="mt-1.5 text-xs text-accent">{errors['name']}</p>}
             </div>
 
             <div>
-              <div className="mb-1.5 flex items-baseline justify-between">
+              <div className="mb-2 flex items-baseline justify-between">
                 <label htmlFor="gb-message" className="text-xs text-muted">
                   留言
                 </label>
-                <span className="text-2xs tabular-nums text-faint">
+                <span className="t-meta tabular-nums">
                   {form.message.length}/{MESSAGE_MAX}
                 </span>
               </div>
@@ -166,7 +162,7 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
                 onChange={(event) => update({ message: event.target.value.slice(0, MESSAGE_MAX) })}
                 rows={5}
                 required
-                className="w-full resize-y rounded-lg border border-line bg-surface px-3 py-2.5 text-sm leading-relaxed text-fg outline-none transition-colors placeholder:text-faint focus:border-faint"
+                className="w-full resize-y border-b border-line bg-transparent pb-2 text-sm leading-[1.85] text-fg outline-none transition-colors placeholder:text-faint focus:border-fg"
                 placeholder="想说什么都可以，尽量具体一点 :)"
               />
               {errors['message'] && <p className="mt-1.5 text-xs text-accent">{errors['message']}</p>}
@@ -185,7 +181,7 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
             </div>
 
             <div>
-              <label htmlFor="gb-captcha" className="mb-1.5 block text-xs text-muted">
+              <label htmlFor="gb-captcha" className="mb-2 block text-xs text-muted">
                 验证码{captcha ? `：${captcha.question}` : ''}
               </label>
               <input
@@ -194,7 +190,7 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
                 onChange={(event) => update({ captcha: event.target.value })}
                 inputMode="numeric"
                 autoComplete="off"
-                className="h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-fg outline-none transition-colors placeholder:text-faint focus:border-faint"
+                className="h-9 w-full border-b border-line bg-transparent text-sm text-fg outline-none transition-colors placeholder:text-faint focus:border-fg"
                 placeholder={captcha ? '填写计算结果' : '加载中…'}
                 disabled={!captcha}
               />
@@ -207,7 +203,7 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
               type="submit"
               disabled={submitting || !captcha}
               className={cn(
-                'inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-fg text-sm font-medium text-bg transition-opacity',
+                'inline-flex h-10 w-full items-center justify-center bg-fg text-sm text-bg transition-opacity',
                 (submitting || !captcha) && 'cursor-not-allowed opacity-60',
               )}
             >
@@ -216,12 +212,12 @@ export function GuestbookBoard({ initialEntries }: { initialEntries: GuestbookEn
 
             {notice && (
               <p className="flex items-start gap-1.5 text-xs leading-relaxed text-muted">
-                <CheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+                <CheckIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 {notice}
               </p>
             )}
 
-            <p className="border-t border-line pt-4 text-2xs leading-relaxed text-faint">
+            <p className="border-t border-line pt-5 text-2xs leading-relaxed text-faint">
               {mode === 'local'
                 ? '当前为本地演示模式：留言只保存在这台设备的浏览器里，不会上传。'
                 : '留言会提交到远端存储，审核通过后展示。'}

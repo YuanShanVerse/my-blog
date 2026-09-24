@@ -5,7 +5,9 @@
  * 换站点名、标语或域名后，只要重跑 `npm run og` 就能得到新的分享图，
  * 不用重新设计，也不会出现图片文字和站点信息不一致的情况。
  *
- * 字号不是写死的：按字符宽度估算自动缩放，所以站点名被改成更长的词也不会溢出。
+ * 品牌部分（山形标、「远山」字标）直接用 config/brand.json 里的矢量路径绘制，
+ * 所以分享图和网站上的标志是同一份几何，不依赖任何字体文件。
+ * 其余文字用系统中文字体栈渲染（分享图是位图，不需要与网页字体完全一致）。
  *
  * 依赖 sharp（Next.js 自带，无需额外安装）。
  */
@@ -16,6 +18,7 @@ import sharp from 'sharp';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const site = JSON.parse(await readFile(path.join(projectRoot, 'config', 'site.json'), 'utf8'));
+const brand = JSON.parse(await readFile(path.join(projectRoot, 'config', 'brand.json'), 'utf8'));
 
 /** 转义 XML 特殊字符，避免站点名里出现 & < > 时 SVG 解析失败 */
 const esc = (value) =>
@@ -38,7 +41,7 @@ function estimateWidth(text, fontSize) {
 }
 
 /** 在不超过 maxWidth 的前提下，返回尽量大的字号（不低于 min） */
-function fitFontSize(text, maxWidth, preferred, min = 32) {
+function fitFontSize(text, maxWidth, preferred, min = 20) {
   let size = preferred;
   while (size > min && estimateWidth(text, size) > maxWidth) size -= 2;
   return size;
@@ -46,41 +49,58 @@ function fitFontSize(text, maxWidth, preferred, min = 32) {
 
 const W = 1200;
 const H = 630;
-const PAD = 88;
+const PAD = 96;
 const CONTENT_WIDTH = W - PAD * 2;
+const INK = '#1c1b19';
+const FAINT = '#a09a90';
+const MUTED = '#4f4b45';
+const RULE = '#e6e2d9';
 
-const titleSize = fitFontSize(site.title, CONTENT_WIDTH, 88, 56);
-const taglineSize = fitFontSize(site.tagline, CONTENT_WIDTH, 30, 22);
-const descriptionSize = fitFontSize(site.description, CONTENT_WIDTH, 34, 22);
+/* 「远山」字标：放在页面左侧；山形标放大到右侧，两者共同撑住整张卡片 */
+const MARK_WIDTH = 412;
+const markScale = MARK_WIDTH / Number(brand.wordmark.viewBox.split(' ')[2]);
+const markTop = 168;
+const markHeight = Number(brand.wordmark.viewBox.split(' ')[3]) * markScale;
+
+/* 右侧山形标：按「墨迹区域」而非 64 格对齐，让它正好收在右边界内 */
+const ridgeTop = 21.5;
+const ridgeLeft = 4.5;
+const ridgeWidth = 55;
+const ridgeHeight = 29.9;
+const ridgeScale = 320 / ridgeWidth;
+const ridgeX = W - PAD - ridgeWidth * ridgeScale;
+const ridgeCenterY = markTop + markHeight / 2;
+const ridgeY = ridgeCenterY - ridgeHeight * ridgeScale / 2 - ridgeTop * ridgeScale;
+
+const taglineSize = fitFontSize(site.tagline, CONTENT_WIDTH, 25);
 
 const displayHost = site.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 const byline = site.author?.name ? `by ${site.author.name}` : '';
-
 const sans = 'Inter, Segoe UI, Helvetica, Arial, sans-serif';
-const cjk = 'Microsoft YaHei, PingFang SC, Hiragino Sans GB, Noto Sans SC, sans-serif';
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="#ffffff"/>
-  <rect x="0" y="0" width="6" height="${H}" fill="#111111"/>
+  <rect width="${W}" height="${H}" fill="#fbfaf7"/>
 
-  <text x="${PAD}" y="132" font-family="${sans}" font-size="24"
-        letter-spacing="8" fill="#9a9a9a">${esc(site.nameEn)}</text>
+  <g transform="translate(${ridgeX.toFixed(2)} ${ridgeY.toFixed(2)}) scale(${ridgeScale.toFixed(4)})">
+    <path d="${brand.ridge}" fill="${INK}" opacity="0.18"/>
+  </g>
 
-  <text x="${PAD}" y="308" font-family="${cjk}" font-size="${titleSize}"
-        font-weight="700" fill="#111111">${esc(site.title)}</text>
+  <g transform="translate(${PAD} ${markTop}) scale(${markScale.toFixed(6)})">
+    <path transform="${brand.wordmark.transform}" d="${brand.wordmark.d}" fill="${INK}"/>
+  </g>
 
-  <text x="${PAD}" y="390" font-family="${cjk}" font-size="${descriptionSize}"
-        fill="#4a4a4a">${esc(site.description)}</text>
+  <text x="${PAD}" y="${Math.round(markTop + markHeight + 44)}" font-family="${sans}"
+        font-size="19" letter-spacing="9.5" fill="${FAINT}">${esc(site.nameEn)}</text>
 
-  <text x="${PAD}" y="454" font-family="${sans}" font-size="${taglineSize}"
-        fill="#8a8a8a">${esc(site.tagline)}</text>
+  <text x="${PAD}" y="${Math.round(markTop + markHeight + 88)}" font-family="${sans}"
+        font-size="${taglineSize}" fill="${MUTED}">${esc(site.tagline)}</text>
 
-  <line x1="${PAD}" y1="516" x2="${W - PAD}" y2="516" stroke="#e6e6e6" stroke-width="1"/>
+  <line x1="${PAD}" y1="524" x2="${W - PAD}" y2="524" stroke="${RULE}" stroke-width="1"/>
 
-  <text x="${PAD}" y="562" font-family="${sans}" font-size="24"
-        fill="#9a9a9a">${esc(displayHost)}</text>
-  <text x="${W - PAD}" y="562" text-anchor="end" font-family="${sans}" font-size="24"
-        fill="#9a9a9a">${esc(byline)}</text>
+  <text x="${PAD}" y="570" font-family="${sans}" font-size="20"
+        fill="${FAINT}">${esc(displayHost)}</text>
+  <text x="${W - PAD}" y="570" text-anchor="end" font-family="${sans}" font-size="20"
+        fill="${FAINT}">${esc(byline)}</text>
 </svg>`;
 
 const outDir = path.join(projectRoot, 'public');
@@ -91,4 +111,4 @@ await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(outFile);
 
 const info = await sharp(outFile).metadata();
 console.log(`已生成 public/og.png (${info.width}x${info.height})`);
-console.log(`  标题字号 ${titleSize} / 描述字号 ${descriptionSize} / 标语字号 ${taglineSize}`);
+console.log(`  字标宽度 ${MARK_WIDTH}px / 标高 ${Math.round(markHeight)}px / 标语字号 ${taglineSize}`);

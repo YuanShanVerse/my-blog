@@ -24,7 +24,7 @@ export function SearchButton({ className }: { className?: string }) {
     >
       <SearchIcon className="h-[1.05rem] w-[1.05rem]" />
       <span className="hidden text-xs text-faint lg:inline">搜索</span>
-      <kbd className="hidden rounded border border-line px-1.5 py-0.5 font-sans text-[0.625rem] leading-none text-faint lg:inline">
+      <kbd className="hidden border border-line px-1.5 py-0.5 font-sans text-[0.625rem] leading-none text-faint lg:inline">
         {shortcut}
       </kbd>
     </button>

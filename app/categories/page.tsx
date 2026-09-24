@@ -15,15 +15,15 @@ export default function CategoriesPage() {
   const used = categories.filter((category) => category.count > 0).length;
 
   return (
-    <div className="container-page py-14 sm:py-20">
+    <div className="container-page py-20 sm:py-28">
       <header className="max-w-reading">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-[1.75rem]">分类</h1>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
+        <h1 className="t-page">分类</h1>
+        <p className="t-lead mt-5">
           共 {categories.length} 个分类，其中 {used} 个已有文章，全部文章合计 {total} 篇。
         </p>
       </header>
 
-      <CategoryList categories={categories} className="mt-10" />
+      <CategoryList categories={categories} className="mt-14" />
     </div>
   );
 }

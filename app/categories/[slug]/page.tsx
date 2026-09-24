@@ -40,8 +40,8 @@ export default async function CategoryPage({ params }: PageProps) {
   const posts = getPostsByCategory(category.slug);
 
   return (
-    <div className="container-page py-14 sm:py-20">
-      <nav className="flex items-center gap-2 text-xs text-faint" aria-label="面包屑">
+    <div className="container-page py-20 sm:py-28">
+      <nav className="flex items-baseline gap-2.5 text-xs text-faint" aria-label="面包屑">
         <Link href="/categories" className="transition-colors hover:text-fg">
           分类
         </Link>
@@ -49,20 +49,17 @@ export default async function CategoryPage({ params }: PageProps) {
         <span className="text-muted">{category.name}</span>
       </nav>
 
-      <header className="mt-6 max-w-reading">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
-          <span className="text-faint">#</span>
-          {category.name}
-        </h1>
-        <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">{category.description}</p>
-        <p className="mt-4 text-xs text-faint">共 {posts.length} 篇文章</p>
+      <header className="mt-8 max-w-reading">
+        <h1 className="t-page">{category.name}</h1>
+        <p className="t-lead mt-5">{category.description}</p>
+        <p className="t-meta mt-5 tabular-nums">共 {posts.length} 篇文章</p>
       </header>
 
       <PostExplorer
         posts={posts}
         lockedCategory={category.slug}
         perPage={site.postsPerPage}
-        className="mt-10"
+        className="mt-14"
       />
     </div>
   );

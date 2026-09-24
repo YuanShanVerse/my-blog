@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { CheckIcon, LinkIcon } from '@/components/Icons';
 
-/** 分享：复制链接 + 常用平台。默认折叠为一行小按钮，不打断阅读。 */
+/** 分享：复制链接 + 常用平台。纯文字，默认折叠为一行，不打断阅读。 */
 export function ShareButtons({ url, title }: { url: string; title: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -22,8 +22,8 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
   const encodedTitle = encodeURIComponent(title);
 
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted">
-      <span className="text-2xs uppercase tracking-[0.2em] text-faint">分享</span>
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted">
+      <span className="text-faint">分享</span>
 
       <button
         type="button"

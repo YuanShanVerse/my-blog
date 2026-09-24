@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { ArrowRightIcon, CloseIcon, SearchIcon } from '@/components/Icons';
+import { CloseIcon, SearchIcon } from '@/components/Icons';
 import { OPEN_SEARCH_EVENT } from '@/lib/events';
 import type { SearchIndex, SearchRecord } from '@/lib/search';
 import { cn, formatDate } from '@/lib/utils';
@@ -93,7 +93,7 @@ function Highlight({ text, tokens }: { text: string; tokens: string[] }) {
     <>
       {parts.map((part, index) =>
         tokens.includes(part.toLowerCase()) ? (
-          <mark key={index} className="rounded-[2px] bg-accent-soft text-fg">
+          <mark key={index} className="bg-accent-soft text-fg">
             {part}
           </mark>
         ) : (
@@ -218,7 +218,7 @@ export function SearchDialog() {
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-start justify-center bg-zinc-950/25 px-4 pt-[10vh] backdrop-blur-[2px] dark:bg-black/50"
+      className="overlay fixed inset-0 z-[70] flex items-start justify-center px-4 pt-[10vh]"
       onClick={close}
       role="presentation"
     >
@@ -227,7 +227,7 @@ export function SearchDialog() {
         aria-modal="true"
         aria-label="全站搜索"
         onClick={(event) => event.stopPropagation()}
-        className="w-full max-w-xl animate-fade-in overflow-hidden rounded-xl border border-line bg-bg shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]"
+        className="w-full max-w-xl animate-fade-in border border-line bg-bg"
       >
         <div className="flex items-center gap-3 border-b border-line px-4">
           <SearchIcon className="h-4 w-4 shrink-0 text-faint" />
@@ -262,9 +262,7 @@ export function SearchDialog() {
           {!loading && !error && results.length > 0 && (
             <ul className="py-1.5">
               {tokens.length === 0 && (
-                <li className="px-4 pb-1 pt-2 text-2xs uppercase tracking-widest text-faint">
-                  最近更新
-                </li>
+                <li className="t-meta px-4 pb-2 pt-3">最近更新</li>
               )}
               {results.map((result, index) => (
                 <li key={result.post.slug}>
@@ -277,14 +275,14 @@ export function SearchDialog() {
                       index === activeIndex ? 'bg-surface' : 'hover:bg-surface',
                     )}
                   >
-                    <span className="flex items-center gap-2 text-2xs uppercase tracking-widest text-faint">
-                      <span>{result.post.categoryName}</span>
-                      <span aria-hidden="true">·</span>
-                      <span className="tabular-nums">{formatDate(result.post.date)}</span>
-                      <span aria-hidden="true">·</span>
-                      <span>{result.post.readingTime} min</span>
+                    <span className="flex items-center gap-2">
+                      <span className="t-meta">{result.post.categoryName}</span>
+                      <span className="text-faint" aria-hidden="true">·</span>
+                      <span className="t-meta tabular-nums">{formatDate(result.post.date)}</span>
+                      <span className="text-faint" aria-hidden="true">·</span>
+                      <span className="t-meta">{result.post.readingTime} min</span>
                     </span>
-                    <span className="text-sm font-medium leading-snug text-fg">
+                    <span className="font-serif text-sm font-bold leading-snug text-fg">
                       <Highlight text={result.post.title} tokens={tokens} />
                     </span>
                     <span className="line-clamp-2 text-xs leading-relaxed text-muted">
@@ -297,16 +295,15 @@ export function SearchDialog() {
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-line px-4 py-2 text-2xs text-faint">
-          <span className="flex items-center gap-3">
+        <div className="flex items-center justify-between border-t border-line px-4 py-2.5">
+          <span className="t-meta flex items-center gap-3">
             <span>↑ ↓ 选择</span>
             <span>↵ 打开</span>
             <span>Esc 关闭</span>
           </span>
           {tokens.length > 0 && !loading && (
-            <span className="flex items-center gap-1">
+            <span className="t-meta flex items-center gap-1 text-muted">
               {results.length} 条结果
-              <ArrowRightIcon className="h-3 w-3" />
             </span>
           )}
         </div>

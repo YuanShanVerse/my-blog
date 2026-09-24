@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { CloseIcon, MenuIcon, SearchIcon } from '@/components/Icons';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { openSearch } from '@/lib/events';
-import { mainNav } from '@/lib/site';
+import { allNav } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 /** 移动端汉堡菜单：展开后是简洁的文字列表，不做全屏遮罩动画 */
@@ -45,16 +45,16 @@ export function MobileNav() {
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-full border-b border-line bg-bg px-5 pb-4 pt-2 shadow-sm">
+        <div className="absolute inset-x-0 top-full border-b border-line bg-bg px-6 pb-5 pt-1">
           <nav className="flex flex-col" aria-label="移动端导航">
-            {mainNav.map((item) => {
-              const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+            {allNav.map((item) => {
+              const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'border-b border-line/60 py-3 text-[0.9375rem] last:border-0',
+                    'border-b border-line py-3.5 text-base last:border-0',
                     active ? 'text-fg' : 'text-muted',
                   )}
                 >
@@ -63,7 +63,7 @@ export function MobileNav() {
               );
             })}
           </nav>
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-4 flex items-center justify-between">
             <button
               type="button"
               onClick={() => {

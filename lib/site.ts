@@ -92,11 +92,12 @@ export function repoFileUrl(path: string): string | null {
   return contacts.repo ? `${contacts.repo}/blob/main/${path.replace(/^\//, '')}` : null;
 }
 
-/** 主导航 */
+/** 顶栏主导航：只留三项，首页由站标承担 */
 export const mainNav = [
-  { href: '/', label: '首页' },
   { href: '/posts', label: '文章' },
   { href: '/categories', label: '分类' },
   { href: '/about', label: '关于' },
-  { href: '/guestbook', label: '留言板' },
 ] as const;
+
+/** 完整导航：移动端菜单、页脚与 404 页使用，保证留言板等入口不会被藏起来 */
+export const allNav = [...mainNav, { href: '/guestbook', label: '留言板' }] as const;

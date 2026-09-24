@@ -74,7 +74,10 @@ function ArticleFooterNav({ post }: { post: PostMeta }) {
   if (!prev && !next) return null;
 
   return (
-    <nav className="mt-14 grid gap-px overflow-hidden border-y border-line sm:grid-cols-2" aria-label="上下篇导航">
+    <nav
+      className="mt-20 grid gap-px border-y border-line sm:grid-cols-2"
+      aria-label="上下篇导航"
+    >
       {[
         { item: prev, label: '上一篇', align: 'left' as const, Icon: ArrowLeftIcon },
         { item: next, label: '下一篇', align: 'right' as const, Icon: ArrowRightIcon },
@@ -83,31 +86,27 @@ function ArticleFooterNav({ post }: { post: PostMeta }) {
           key={label}
           className={
             align === 'right'
-              ? 'sm:text-right sm:border-l sm:border-line'
+              ? 'sm:border-l sm:border-line'
               : 'border-b border-line sm:border-b-0'
           }
         >
           {item ? (
             <Link
               href={`/posts/${item.slug}`}
-              className="group flex flex-col gap-1.5 px-1 py-5 transition-colors"
+              className="group flex flex-col gap-2 px-1 py-6 transition-colors"
             >
-              <span
-                className={`flex items-center gap-1.5 text-2xs uppercase tracking-widest text-faint ${
-                  align === 'right' ? 'sm:justify-end' : ''
-                }`}
-              >
+              <span className="flex items-center gap-1.5 text-xs text-faint">
                 {align === 'left' && <Icon className="h-3 w-3" />}
                 {label}
                 {align === 'right' && <Icon className="h-3 w-3" />}
               </span>
-              <span className="text-sm font-medium leading-snug text-fg transition-colors group-hover:text-accent">
+              <span className="font-serif text-[0.9375rem] font-bold leading-snug text-fg underline decoration-transparent decoration-1 underline-offset-4 transition-colors group-hover:decoration-accent">
                 {item.title}
               </span>
-              <span className="text-xs tabular-nums text-faint">{formatDate(item.date)}</span>
+              <span className="t-meta tabular-nums">{formatDate(item.date)}</span>
             </Link>
           ) : (
-            <div className="px-1 py-5 text-xs text-faint">没有更多了</div>
+            <div className="px-1 py-6 text-xs text-faint">没有更多了</div>
           )}
         </div>
       ))}
@@ -156,67 +155,60 @@ export default async function PostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      <div className="container-page pt-12 sm:pt-16">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,45rem)_13rem] lg:justify-center lg:gap-20">
+      <div className="container-page pt-20 sm:pt-28">
+        {/*
+          正文栏固定 42.5rem（680px ≈ 38 字/行），右侧留一条窄目录。
+          容器内容宽度是 55rem（60rem − 左右各 2.5rem），
+          所以目录栏取 10rem、列间距 2rem，正好把 680px 让给正文。
+        */}
+        <div className="grid gap-16 lg:grid-cols-[minmax(0,42.5rem)_10rem] lg:justify-center lg:gap-8">
           <article className="min-w-0">
-            {/* 面包屑 */}
-            <nav className="flex items-center gap-2 text-xs text-faint" aria-label="面包屑">
-              <Link href="/posts" className="transition-colors hover:text-fg">
-                文章
-              </Link>
-              <span aria-hidden="true">/</span>
-              <Link
-                href={`/categories/${post.category}`}
-                className="transition-colors hover:text-fg"
-              >
-                {post.categoryName}
-              </Link>
-            </nav>
-
-            <header className="mt-6">
-              <h1 className="text-[1.625rem] font-semibold leading-[1.35] tracking-tight sm:text-[2rem]">
-                {post.title}
-              </h1>
-
-              {post.description && (
-                <p className="mt-4 text-[0.9375rem] leading-relaxed text-muted sm:text-base">
-                  {post.description}
-                </p>
-              )}
-
-              <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-line py-3 text-xs text-faint">
+            {/*
+              元信息在标题之前：先交代「这是什么时候、写的是哪一类」，
+              再进入标题。也让标题上方不需要任何装饰元素。
+            */}
+            <header>
+              <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
                 <Link
                   href={`/categories/${post.category}`}
-                  className="chip !py-0.5 !text-2xs hover:border-faint hover:text-fg"
+                  className="t-meta transition-colors hover:text-fg"
                 >
                   {post.categoryName}
                 </Link>
-                <time dateTime={formatDate(post.date, 'iso')} className="tabular-nums">
+                <time dateTime={formatDate(post.date, 'iso')} className="t-meta tabular-nums">
                   {formatDate(post.date, 'long')}
                 </time>
                 {updatedOn && (
-                  <span className="tabular-nums">更新于 {formatDate(updatedOn, 'long')}</span>
+                  <span className="t-meta tabular-nums">更新于 {formatDate(updatedOn, 'long')}</span>
                 )}
-                <span className="inline-flex items-center gap-1">
-                  <ClockIcon className="h-3.5 w-3.5" />
-                  约 {post.readingTime} 分钟
+                <span className="t-meta inline-flex items-center gap-1.5">
+                  <ClockIcon className="h-3 w-3" />约 {post.readingTime} 分钟
                 </span>
-                <span>{author}</span>
               </div>
+
+              <h1 className="t-article mt-7">{post.title}</h1>
+
+              {post.description && (
+                <p className="t-lead mt-7 max-w-reading">{post.description}</p>
+              )}
             </header>
 
             {/* 移动端折叠目录 */}
-            <div className="mt-10">
+            <div className="mt-16">
               <TableOfContents items={toc} variant="mobile" />
               <ArticleEnhancements html={html} />
             </div>
 
             {/* 标签 */}
             {post.tags.length > 0 && (
-              <div className="mt-12 flex flex-wrap items-center gap-2 border-t border-line pt-6">
-                <span className="text-2xs uppercase tracking-[0.2em] text-faint">标签</span>
+              <div className="mt-16 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line pt-6">
+                <span className="text-xs text-faint">标签</span>
                 {post.tags.map((tag) => (
-                  <Link key={tag} href={`/posts?tag=${encodeURIComponent(tag)}`} className="chip-plain">
+                  <Link
+                    key={tag}
+                    href={`/posts?tag=${encodeURIComponent(tag)}`}
+                    className="text-sm text-muted transition-colors hover:text-fg"
+                  >
                     #{tag}
                   </Link>
                 ))}
@@ -224,7 +216,7 @@ export default async function PostPage({ params }: PageProps) {
             )}
 
             {/* 分享 / 源文件 */}
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-5">
               <ShareButtons url={canonical} title={post.title} />
               {sourceUrl && (
                 <a
@@ -244,19 +236,20 @@ export default async function PostPage({ params }: PageProps) {
 
           {/* 桌面端目录 */}
           <TableOfContents items={toc} variant="desktop" />
-        </div>
 
-        {related.length > 0 && (
-          <div className="mx-auto max-w-[45rem] lg:mx-0">
-            <Section title="相关文章">
-              <div className="divide-list">
-                {related.map((item) => (
-                  <PostListItem key={item.slug} post={item} className="py-6" />
-                ))}
-              </div>
-            </Section>
-          </div>
-        )}
+          {/* 相关文章：与正文栏同宽同列，不另起一套对齐 */}
+          {related.length > 0 && (
+            <div className="lg:col-start-1">
+              <Section title="相关文章">
+                <div className="divide-list">
+                  {related.map((item) => (
+                    <PostListItem key={item.slug} post={item} className="py-5" />
+                  ))}
+                </div>
+              </Section>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

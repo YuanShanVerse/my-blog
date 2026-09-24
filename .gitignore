@@ -24,6 +24,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# 临时脚本与日志（.tmp- 前缀，用完即删）
+.tmp-*
+
 # env
 .env*.local
 .env
