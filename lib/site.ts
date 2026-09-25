@@ -30,37 +30,12 @@ export interface SiteConfig {
   rss: { title: string; description: string; language: string };
 }
 
-function normalizeUrl(value: string | undefined): string | undefined {
-  const trimmed = value?.trim();
-  if (!trimmed) return undefined;
-  // Vercel 注入的域名不带协议前缀，需要补上 https
-  return (/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`).replace(/\/+$/, '');
-}
-
-/**
- * 解析站点对外访问地址，优先级从高到低：
- * 1. NEXT_PUBLIC_SITE_URL          —— 显式指定（**绑定正式域名后填这个**）
- * 2. VERCEL_PROJECT_PRODUCTION_URL —— Vercel 注入的项目生产域名，同项目内稳定
- * 3. VERCEL_URL                    —— Vercel 注入的本次部署域名
- * 4. config/site.json 的 url        —— 本地开发时的兜底
- *
- * 这样 canonical / sitemap / RSS / OG 里的绝对地址在本地、预览、生产三种环境下都自动正确，
- * 换域名时不需要改代码（只要设一个环境变量）。
- */
-function resolveSiteUrl(): string {
-  const resolved =
-    normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL) ??
-    normalizeUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL) ??
-    normalizeUrl(process.env.VERCEL_URL);
-
-  return resolved ?? rawSite.url.replace(/\/+$/, '');
-}
-
 const base = rawSite as unknown as SiteConfig;
 
+/** 正式 URL 只由站点配置决定，避免 Vercel 的部署域名覆盖 canonical 等地址。 */
 export const site: SiteConfig = {
   ...base,
-  url: resolveSiteUrl(),
+  url: base.url.replace(/\/+$/, ''),
 };
 
 /**

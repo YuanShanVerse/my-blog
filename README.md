@@ -2,7 +2,7 @@
 
 一个以内容为中心的极简个人博客 / 数字花园。写作流程是 **写 Markdown → git push → 自动部署**，没有后台、没有数据库、没有第三方脚本。
 
-- 线上地址：<https://my-blog-svlq.vercel.app>
+- 线上地址：<https://yuanshanverse.com>
 - 仓库：<https://github.com/YuanShanVerse/my-blog>
 - 站点名、作者、简介、社交链接：全在 `config/site.json`
 - 分类：全在 `config/categories.json`
@@ -141,7 +141,7 @@ featured: true               # 可选，首页「精选」区会展示（最多 
 | `name` / `nameEn` | 站点名（导航左上角、页脚、SEO 标题模板） |
 | `title` | 浏览器标题（首页）与分享图主标题 |
 | `tagline` / `description` | 首页那一句英文标语 + 中文简介（也用作全站 description） |
-| `url` | 本地开发时的地址兜底；**在 Vercel 上会被自动注入的域名覆盖**（见下方说明） |
+| `url` | 唯一正式主域名；canonical、sitemap、RSS、OG 等绝对地址都使用它 |
 | `repo` | 仓库地址，用于文章底部「在 GitHub 上编辑本文」链接；留空则不显示 |
 | `author.*` | 姓名、bio、Email、GitHub、Twitter、所在地。**`email` / `twitter` / `location` 留空即不渲染**，不会出现空链接 |
 | `intro.lead` / `intro.body` | 首页与关于页的自我介绍段落 |
@@ -150,15 +150,8 @@ featured: true               # 可选，首页「精选」区会展示（最多 
 
 ### 关于 `url` 与域名的关系
 
-站点对外地址按下面的优先级解析（见 `lib/site.ts`），**换域名时不用改代码**：
-
-1. `NEXT_PUBLIC_SITE_URL`（环境变量，最高优先级）
-2. `VERCEL_PROJECT_PRODUCTION_URL`（Vercel 自动注入的项目生产域名）
-3. `VERCEL_URL`（Vercel 自动注入的本次部署域名）
-4. `config/site.json` 里的 `url`（本地开发兜底）
-
-所以：本地开发不用管；部署到 Vercel 后 canonical / sitemap / RSS / OG 会自动用 Vercel 域名；
-**绑定正式域名后，只需要在 Vercel 项目里加一个 `NEXT_PUBLIC_SITE_URL=https://你的域名` 环境变量再重新部署即可。**
+站点对外地址由 `config/site.json` 的 `url` 唯一决定，当前为 `https://yuanshanverse.com`。
+Vercel 的预览域名和部署环境变量不会覆盖 canonical / sitemap / RSS / OG。
 
 ---
 
@@ -212,16 +205,14 @@ vercel --prod   # 生产环境
 
 ## 8. 如何绑定自己的域名
 
-1. **在 Vercel**：Project → Settings → Domains → 添加你的域名
-2. **在域名商处配置 DNS**（以 `example.com` 为例）：
-   - 根域名：添加 `A` 记录指向 `76.76.21.21`
-   - `www` 子域名：添加 `CNAME` 记录指向 `cname.vercel-dns.com`
-   - （具体值以 Vercel 页面提示为准）
-3. 等待 DNS 生效（通常几分钟到几小时），Vercel 会自动签发 HTTPS 证书
-4. **在 Vercel 项目里加环境变量 `NEXT_PUBLIC_SITE_URL = https://你的域名`**，然后重新部署 —— 这一步不能忘，否则 canonical、sitemap、RSS 里还是旧的 Vercel 域名
-5. 在 Vercel 的 Domains 里把 `www.你的域名` 设为跳转到主域名（或反之），只保留一个 canonical 域名
+当前域名 `yuanshanverse.com` 由 Cloudflare 管理 DNS，Vercel 托管网站并随 `main` 分支自动部署。
 
-绑定完成后建议提交一次站点地图给搜索引擎：Google Search Console / Bing Webmaster 添加 `https://你的域名/sitemap.xml`。
+1. 在 Vercel 项目的 Domains 中，将 `yuanshanverse.com` 连接到 Production。
+2. 在 Cloudflare 中，根域名 `@` 和 `www` 的 CNAME 均指向 Vercel 项目给出的目标，代理状态设为 DNS only。
+3. 在 Vercel 中，将 `www.yuanshanverse.com` 和旧 `my-blog-svlq.vercel.app` 都设为 308 永久跳转到 `yuanshanverse.com`。
+4. 等待 DNS 与 HTTPS 证书生效，并核对站点页面、sitemap、RSS 与 canonical。
+
+绑定完成后可向 Google Search Console / Bing Webmaster 提交 `https://yuanshanverse.com/sitemap.xml`。
 
 ---
 
