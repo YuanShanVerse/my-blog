@@ -6,7 +6,7 @@ import { allNav } from '@/lib/site';
 export default function NotFound() {
   return (
     <div className="container-page flex min-h-[70vh] flex-col items-center justify-center py-28 text-center">
-      <MountainMark className="h-10 w-10 text-faint" />
+      <MountainMark className="h-10 w-16" />
       <p className="t-meta mt-8 tracking-[0.3em]">404</p>
       <h1 className="t-page mt-6">这一页不存在，或者已经搬走了</h1>
       <p className="t-lead mt-5 max-w-sm">

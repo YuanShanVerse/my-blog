@@ -13,7 +13,7 @@ export function Header() {
     <header className="site-header sticky top-0 z-40 border-b border-line">
       <div className="container-page flex h-14 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2.5 text-fg">
-          <MountainMark className="h-[1.05rem] w-[1.05rem] shrink-0" />
+          <MountainMark className="h-5 w-8 shrink-0" />
           <Wordmark className="h-[1.3rem] w-auto" />
           <span className="hidden font-mono text-[0.625rem] tracking-[0.3em] text-faint sm:inline">
             {site.nameEn}

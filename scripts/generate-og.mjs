@@ -5,8 +5,7 @@
  * 换站点名、标语或域名后，只要重跑 `npm run og` 就能得到新的分享图，
  * 不用重新设计，也不会出现图片文字和站点信息不一致的情况。
  *
- * 品牌部分（山形标、「远山」字标）直接用 config/brand.json 里的矢量路径绘制，
- * 所以分享图和网站上的标志是同一份几何，不依赖任何字体文件。
+ * 「远山」字标使用 config/brand.json 里的矢量路径；山形使用网站同款图片。
  * 其余文字用系统中文字体栈渲染（分享图是位图，不需要与网页字体完全一致）。
  *
  * 依赖 sharp（Next.js 自带，无需额外安装）。
@@ -62,15 +61,14 @@ const markScale = MARK_WIDTH / Number(brand.wordmark.viewBox.split(' ')[2]);
 const markTop = 168;
 const markHeight = Number(brand.wordmark.viewBox.split(' ')[3]) * markScale;
 
-/* 右侧山形标：按「墨迹区域」而非 64 格对齐，让它正好收在右边界内 */
-const ridgeTop = 21.5;
-const ridgeLeft = 4.5;
-const ridgeWidth = 55;
-const ridgeHeight = 29.9;
-const ridgeScale = 320 / ridgeWidth;
-const ridgeX = W - PAD - ridgeWidth * ridgeScale;
-const ridgeCenterY = markTop + markHeight / 2;
-const ridgeY = ridgeCenterY - ridgeHeight * ridgeScale / 2 - ridgeTop * ridgeScale;
+const mountainWidth = 320;
+const mountain = await sharp(path.join(projectRoot, 'public', 'images', 'mountain-ink.webp'))
+  .resize({ width: mountainWidth })
+  .png()
+  .toBuffer();
+const mountainHeight = (await sharp(mountain).metadata()).height;
+const mountainX = W - PAD - mountainWidth;
+const mountainY = Math.round(markTop + markHeight / 2 - mountainHeight / 2);
 
 const taglineSize = fitFontSize(site.tagline, CONTENT_WIDTH, 25);
 
@@ -80,10 +78,6 @@ const sans = 'Inter, Segoe UI, Helvetica, Arial, sans-serif';
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <rect width="${W}" height="${H}" fill="#fbfaf7"/>
-
-  <g transform="translate(${ridgeX.toFixed(2)} ${ridgeY.toFixed(2)}) scale(${ridgeScale.toFixed(4)})">
-    <path d="${brand.ridge}" fill="${INK}" opacity="0.18"/>
-  </g>
 
   <g transform="translate(${PAD} ${markTop}) scale(${markScale.toFixed(6)})">
     <path transform="${brand.wordmark.transform}" d="${brand.wordmark.d}" fill="${INK}"/>
@@ -107,7 +101,10 @@ const outDir = path.join(projectRoot, 'public');
 await mkdir(outDir, { recursive: true });
 const outFile = path.join(outDir, 'og.png');
 
-await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(outFile);
+await sharp(Buffer.from(svg))
+  .composite([{ input: mountain, left: mountainX, top: mountainY }])
+  .png({ compressionLevel: 9 })
+  .toFile(outFile);
 
 const info = await sharp(outFile).metadata();
 console.log(`已生成 public/og.png (${info.width}x${info.height})`);

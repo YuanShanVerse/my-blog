@@ -43,7 +43,7 @@ export default function AboutPage() {
     <div className="container-page py-20 sm:py-28">
       <div className="mx-auto max-w-reading">
         <header>
-          <MountainMark className="h-10 w-10 text-fg" />
+          <MountainMark className="h-12 w-[4.5rem]" />
           {/*
             整页没有文字标题（视觉标题是字标 SVG），所以必须把字标放进 h1，
             再补一段仅供读屏与搜索引擎识别的文本。h1 用 flex 包裹，

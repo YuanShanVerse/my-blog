@@ -97,6 +97,14 @@
 /* ================================= 组件层 ================================= */
 
 @layer components {
+  .mountain-mark {
+    object-fit: contain;
+  }
+
+  .dark .mountain-mark {
+    filter: invert(1);
+  }
+
   /* 页面容器：居中 + 左右留白。大留白、窄内容栏。 */
   .container-page {
     @apply mx-auto w-full max-w-wide px-6 sm:px-10;

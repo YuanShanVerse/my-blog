@@ -50,7 +50,7 @@ export default function HomePage() {
       */}
       <section className="container-page flex min-h-[calc(100svh-3.5rem)] flex-col pb-8 pt-16 sm:pt-20">
         <div className="flex flex-1 flex-col justify-center py-12">
-          <MountainMark className="h-14 w-14 text-fg" />
+          <MountainMark className="h-20 w-32" />
 
           {/*
             首屏的视觉标题是字标 SVG，所以把它放进 h1，

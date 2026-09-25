@@ -1,20 +1,25 @@
-import type { SVGProps } from 'react';
+import type { ImgHTMLAttributes, SVGProps } from 'react';
 
 import brand from '@/config/brand.json';
 
 /**
  * 品牌图形资产。
  *
- * 几何数据统一放在 config/brand.json（OG 分享图脚本也读同一份），
- * 这里只负责把它们渲染成可跟随 currentColor 的内联 SVG。
+ * 字形几何数据统一放在 config/brand.json；山形使用样张 B 的墨迹图。
  */
 
-/** 水墨山形标：一条棱角山脊，两端收笔、下缘微微上弧 */
-export function MountainMark(props: SVGProps<SVGSVGElement>) {
+/** 样张 B 中间的水墨山形，作为装饰与字标搭配使用。 */
+export function MountainMark({ className = '', ...props }: ImgHTMLAttributes<HTMLImageElement>) {
   return (
-    <svg viewBox={brand.ridgeViewBox} fill="currentColor" aria-hidden="true" {...props}>
-      <path d={brand.ridge} />
-    </svg>
+    <img
+      src="/images/mountain-ink.webp"
+      width={640}
+      height={427}
+      alt=""
+      aria-hidden="true"
+      className={`mountain-mark ${className}`}
+      {...props}
+    />
   );
 }
 
