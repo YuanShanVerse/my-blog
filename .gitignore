@@ -30,3 +30,6 @@ yarn-error.log*
 # env
 .env*.local
 .env
+
+# 本机 Obsidian Vault 路径，不提交到公开仓库
+config/obsidian.local.json

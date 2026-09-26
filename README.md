@@ -130,6 +130,16 @@ featured: true               # 可选，首页「精选」区会展示（最多 
 
 **草稿机制**：`draft: true` 的文章不会出现在首页、列表、分类、搜索索引、RSS、Sitemap 中，也不会生成页面。
 
+### 从 Obsidian 发布
+
+本地工作流说明见 [`docs/obsidian-publishing.md`](docs/obsidian-publishing.md)。文章放在 Obsidian Vault 的 `08 博客/待发布/`，然后运行：
+
+```bash
+npm run publish:post -- "文章文件名.md"
+```
+
+脚本会将原笔记转换后复制到 `content/posts/`，原笔记留在 Vault；发布前仍需运行 `npm run typecheck`、`npm run build` 和 `npm run verify`。
+
 ---
 
 ## 5. 如何修改个人信息
