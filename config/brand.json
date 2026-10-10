@@ -1,5 +1,5 @@
 {
-  "$comment": "品牌图形资产。字标与印记是从霞鹜文楷（LXGW WenKai）按需子集里用 fontTools 导出的字形轮廓，不依赖任何字体文件：不会闪字、可跟随 currentColor、任意尺寸都锐利。山形标为手工绘制的矢量路径，与 favicon（app/icon.svg）保持同一份几何。",
+  "$comment": "品牌图形资产。字标与印记是从霞鹜文楷（LXGW WenKai）按需子集里用 fontTools 导出的字形轮廓，不依赖任何字体文件：不会闪字、可跟随 currentColor、任意尺寸都锐利。主页和 favicon 共用 public/images/mountain-ink.webp 山形图。",
   "ridge": "M4.5 48 L23 21.5 L32 37.5 L39.5 30.5 L59.5 48 C48 50.6 36 51.4 24 50.8 C15.5 50.4 9 49.4 4.5 48 Z",
   "ridgeViewBox": "0 0 64 64",
   "wordmark": {
