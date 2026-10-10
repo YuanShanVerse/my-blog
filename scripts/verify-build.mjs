@@ -47,7 +47,7 @@ const REQUIRED_FILES = [
   'sitemap.xml',
   'robots.txt',
   'search-index.json',
-  'icon.svg',
+  'icon.png',
 ];
 
 const missing = REQUIRED_FILES.filter((file) => !existsSync(path.join(outDir, file)));

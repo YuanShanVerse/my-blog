@@ -47,7 +47,7 @@ personal-blog/
 │  ├─ robots.ts                # → /robots.txt
 │  ├─ rss.xml/route.ts         # → /rss.xml（全文输出）
 │  ├─ search-index.json/route.ts  # → /search-index.json
-│  └─ icon.svg                 # favicon
+│  └─ icon.png                 # favicon（主页水墨 Logo 的独立 PNG）
 ├─ components/                 # UI 组件（按职责拆分，均为服务端组件，仅必要处标注 'use client'）
 ├─ config/
 │  ├─ site.json                # 站点信息（唯一数据源）
